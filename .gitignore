@@ -1,0 +1,9 @@
+# Windows
+Thumbs.db
+Desktop.ini
+
+# PowerShell logs
+*.log
+
+# VS Code
+.vscode/
