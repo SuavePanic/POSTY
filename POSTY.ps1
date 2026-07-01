@@ -28,10 +28,10 @@ Features:
 - Configure Static IP or DHCP
 - Set Time and Date
 - Join Domain
-- Install WinGet
-- Install APPS
+- Install-WinGet
+- Install-APPS
 - Install-Activation
-- Run Windows Updates
+- Windows Updates
 - System Cleanup
 - Reboot
 #>
