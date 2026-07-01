@@ -25,7 +25,6 @@ Features:
 - Rename computer
 - Disable Indexing
 - Power Management
-- Disable Antivirus
 - Configure Static IP or DHCP
 - Set Time and Date
 - Join Domain
@@ -194,21 +193,6 @@ function Show-PCPowerManagement {
     } while ($true)
 }
 
-function Disable-Antivirus {
-    Write-Header
-    Write-Host "Disable Antivirus" -ForegroundColor Yellow
-
-    try {
-        Write-Host "Disabling Windows Defender Antivirus..."
-        Start-Process "D:\DATA\BATCH\DFR.exe"  
-    }
-    catch {
-        Write-Host "Failed Removal: $($_.Exception.Message)" -ForegroundColor Red
-    }
-
-    Wait-PCContinue
-}
-
 function Set-PCNetwork {
     Write-Header
     Write-Host "Configure Network" -ForegroundColor Yellow
@@ -371,6 +355,19 @@ function Install-PCApps {
     Wait-PCContinue
 }
 
+function Install-Activation {
+    Write-Host "Activate Windows and Office" -ForegroundColor Yellow
+
+    try { 
+        Invoke-RestMethod https://get.activated.win | Invoke-Expression
+    }
+    catch {
+        Write-Host "Activation failed: $($_.Exception.Message)" -ForegroundColor Red
+    }
+
+    Wait-PCContinue
+}
+
  function Invoke-PCWindowsUpdates {
     Write-Header
     Write-Host "Run Windows Updates" -ForegroundColor Yellow
@@ -416,19 +413,6 @@ function Invoke-PCCleanup {
     }
     catch {
         Write-Host "Cleanup failed: $($_.Exception.Message)" -ForegroundColor Red
-    }
-
-    Wait-PCContinue
-}
-
-function Install-Activation {
-    Write-Host "Activate Windows and Office" -ForegroundColor Yellow
-
-    try { 
-        Invoke-RestMethod https://get.activated.win | Invoke-Expression
-    }
-    catch {
-        Write-Host "Activation failed: $($_.Exception.Message)" -ForegroundColor Red
     }
 
     Wait-PCContinue
@@ -500,14 +484,13 @@ do {
     Write-Host "2. Rename Computer"
     Write-Host "3. Disable Indexing"
     Write-Host "4. Power Management"
-    Write-Host "5. Disable Antivirus"
-    Write-Host "6. Configure Network"
-    Write-Host "7. Date & Time Settings"
-    Write-Host "8. Join Domain"
-    Write-Host "9. Install Winget"
-    Write-Host "10. Install Applications"
-    Write-Host "11. Activation"
-    Write-Host "12. Run Windows Updates"
+    Write-Host "5. Configure Network"
+    Write-Host "6. Date & Time Settings"
+    Write-Host "7. Join Domain"
+    Write-Host "8. Install Winget"
+    Write-Host "9. Install Applications"
+    Write-Host "10. Activation"
+    Write-Host "11. Run Windows Updates"
     Write-Host "13. System Cleanup"
     Write-Host "14. Reboot"
     Write-Host "0. Exit"
@@ -520,12 +503,11 @@ do {
         "2" { Rename-PCComputer }
         "3" { Disable-Indexing }
         "4" { Show-PCPowerManagement }
-        "5" { Disable-Antivirus }
-        "6" { Set-PCNetwork }
-        "7" { Open-PCDateTimeSettings }
-        "8" { Join-PCDomain }
-        "9" { Install-PCWinget }
-        "10" { Install-PCApps }
+        "5" { Set-PCNetwork }
+        "6" { Open-PCDateTimeSettings }
+        "7" { Join-PCDomain }
+        "8" { Install-PCWinget }
+        "9" { Install-PCApps }
         "11" { Install-Activation }
         "12" { Invoke-PCWindowsUpdates }
         "13" { Invoke-PCCleanup }
