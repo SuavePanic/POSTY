@@ -4,7 +4,7 @@
 POSTY-CONFIG
 Windows Deployment Toolkit
 
-Version : 1.9.0
+Version : 1.8.7
 Author  : SuavePanic
 Project : https://github.com/SuavePanic/POSTY
 
@@ -36,26 +36,27 @@ Features:
 - Reboot
 #>
 
-$AppName = "POSTY-CONFIG"
-$Version = "1.9.0"
-$LogRoot = "C:\Logs\POSTY-CONFIG"
-$LogFile = Join-Path $LogRoot "POSTY-CONFIG-$(Get-Date -Format 'yyyyMMdd-HHmmss').log"
+$AppName = "POSTY"
+$Version = "1.8.7"
+$LogRoot = "C:\Logs\POSTY"
+$LogFile = Join-Path $LogRoot "POSTY-$(Get-Date -Format 'yyyyMMdd-HHmmss').log"
 
 New-Item -Path $LogRoot -ItemType Directory -Force | Out-Null
 Start-Transcript -Path $LogFile -Append | Out-Null
 
 function Wait-PCContinue {
-    Read-Host "Press Enter To Continue"
+    Read-Host "Press Enter to continue"
 }
 
 function Write-Header {
     Clear-Host
-    Write-Host "======================================================" -ForegroundColor Yellow           
-    Write-Host "                  $AppName v$Version" -ForegroundColor Green
-    Write-Host "              -WINDOWS POST-INSTALL TOOL-" -ForegroundColor Green
-    Write-Host "======================================================" -ForegroundColor Yellow
-    Write-Host "  Install Winget Before App Installation For Win-10" -ForegroundColor Green
-    Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++++++++" -ForegroundColor Yellow
+    Write-Host "========================================"   -ForegroundColor Yellow           
+    Write-Host "            $AppName v$Version"             -ForegroundColor Green
+    Write-Host "       -WINDOWS POST-INSTALL TOOL-"         -ForegroundColor Green
+    Write-Host "========================================"   -ForegroundColor Yellow
+    Write-Host "  Install Winget Before Installing APPS"    -ForegroundColor Green
+    Write-Host "           On Windows 10 Only"              -ForegroundColor Green
+    Write-Host "+++++++++++++++++++++++++++++++++++++++++"  -ForegroundColor Yellow
     Write-Host ""
     Write-Host "Hostname: $env:COMPUTERNAME"
     Write-Host "User:     $env:USERNAME"
@@ -63,18 +64,14 @@ function Write-Header {
     Write-Host ""
 }
 
-function Test-Admin {
-    $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
-    $principal = New-Object Security.Principal.WindowsPrincipal($identity)
-    return $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-}
-
+#------------------Menu Items List------------------------------------
+#------------------------1.SHOW-SYSTEM-INFO---------------------------
 function Show-PCSystemInfo {
 
     Clear-Host
 
     Write-Host "=================================" -ForegroundColor Yellow
-    Write-Host "        SYSTEM INFORMATION"          -ForegroundColor Green
+    Write-Host "        SYSTEM INFORMATION"        -ForegroundColor Green
     Write-Host "=================================" -ForegroundColor Yellow
     Write-Host ""
 
@@ -83,10 +80,12 @@ function Show-PCSystemInfo {
     Wait-PCContinue
 }
 
+
+#------------------------2.RENAME-COMPUTER---------------------------
 function Rename-PCComputer {
     Write-Header
     Write-Host "Rename Computer" -ForegroundColor Yellow
-    $newName = Read-Host "Enter New Computer Name"
+    $newName = Read-Host "Enter new computer name"
 
     if ([string]::IsNullOrWhiteSpace($newName)) {
         Write-Host "Computer name was blank. No change made." -ForegroundColor Red
@@ -104,12 +103,12 @@ function Rename-PCComputer {
         Write-Host "Rename failed: $($_.Exception.Message)" -ForegroundColor Red
     }
 
-    Wait-PCContinue
 }
 
+#------------------------3.DISABLE-INDEXING---------------------------
 function Disable-Indexing {
     Write-Header
-    Write-Host "Disable Indexing Drive C:" -ForegroundColor Yellow
+    Write-Host "Disable Indexing on C: Drive" -ForegroundColor Yellow
 
     try {
         Write-Host "Disabling indexing on C: drive..."
@@ -123,24 +122,24 @@ if ($volume) {
         IndexingEnabled = $false
     } | Out-Null
 
-    Write-Host "Indexing Disabled For Drive C:" -ForegroundColor Green
+    Write-Host "Indexing disabled for drive C:" -ForegroundColor Green
 }
 else {
-    Write-Host "Drive C: Not Found." -ForegroundColor Red
+    Write-Host "Drive C: not found." -ForegroundColor Red
 }
 
     }
     catch {
-        Write-Host "Failed Disable Indexing: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "Failed to disable indexing: $($_.Exception.Message)" -ForegroundColor Red
     }
 
     Wait-PCContinue
 }
 
+#------------------------4.POWER-MANAGEMENT---------------------------
 function Show-PCPowerManagement {
 
     do {
-        Write-Header
         Write-Host "Power Management" -ForegroundColor Yellow
         Write-Host ""
         Write-Host "1. Set Balanced Power Plan"
@@ -156,27 +155,27 @@ function Show-PCPowerManagement {
 
             "1" {
                 powercfg /setactive SCHEME_BALANCED
-                Write-Host "Balanced power Plan Enabled." -ForegroundColor Green
+                Write-Host "Balanced power plan enabled." -ForegroundColor Green
                 Wait-PCContinue
             }
 
             "2" {
                 powercfg /setactive SCHEME_MIN
-                Write-Host "High Performance Power Plan." -ForegroundColor Green
+                Write-Host "High Performance power plan enabled." -ForegroundColor Green
                 Wait-PCContinue
             }
 
             "3" {
                 powercfg /change standby-timeout-ac 0
                 powercfg /change standby-timeout-dc 0
-                Write-Host "Sleep Disabled." -ForegroundColor Green
+                Write-Host "Sleep disabled." -ForegroundColor Green
                 Wait-PCContinue
             }
 
             "4" {
                 powercfg /change monitor-timeout-ac 0
                 powercfg /change monitor-timeout-dc 0
-                Write-Host "Monitor Timeout Disabled." -ForegroundColor Green
+                Write-Host "Monitor timeout disabled." -ForegroundColor Green
                 Wait-PCContinue
             }
 
@@ -185,7 +184,7 @@ function Show-PCPowerManagement {
             }
 
             default {
-                Write-Host "Invalid Selection." -ForegroundColor Red
+                Write-Host "Invalid selection." -ForegroundColor Red
                 Wait-PCContinue
             }
         }
@@ -193,6 +192,7 @@ function Show-PCPowerManagement {
     } while ($true)
 }
 
+#------------------------5.CONFIGURE-NETWORK----------------------------
 function Set-PCNetwork {
     Write-Header
     Write-Host "Configure Network" -ForegroundColor Yellow
@@ -200,7 +200,7 @@ function Set-PCNetwork {
 
     $adapter = Read-Host "Enter adapter name"
     if ([string]::IsNullOrWhiteSpace($adapter)) {
-        Write-Host "Adapter Blank." -ForegroundColor Red
+        Write-Host "Adapter name was blank. No change made." -ForegroundColor Red
         Wait-PCContinue
         return
     }
@@ -219,13 +219,13 @@ function Set-PCNetwork {
             Start-Process ipconfig /renew -wait
             Start-Process ipconfig /flushdns -wait
             Start-Process ipconfig /registerdns -wait
-            Write-Host "Network Configuration Completed." -ForegroundColor Green 
+            Write-Host "Network configuration completed." -ForegroundColor Green 
         }
         elseif ($choice -eq "2") {
             $ip = Read-Host "IP Address"
-            $prefix = Read-Host "Prefix Length, Example 24"
+            $prefix = Read-Host "Prefix Length, example 24"
             $gateway = Read-Host "Default Gateway"
-            $dns = Read-Host "DNS Servers Comma Separated, Example 192.168.1.10,8.8.8.8"
+            $dns = Read-Host "DNS Servers comma separated, example 192.168.1.10,8.8.8.8"
 
             Get-NetIPAddress -InterfaceAlias $adapter -AddressFamily IPv4 -ErrorAction SilentlyContinue |
                 Remove-NetIPAddress -Confirm:$false -ErrorAction SilentlyContinue
@@ -245,18 +245,21 @@ function Set-PCNetwork {
     Wait-PCContinue   
 }
 
+#------------------------6.DATE/TIME---------------------------
 function Open-PCDateTimeSettings {
     
     Write-Host "Opening Date & Time Settings..." -ForegroundColor Yellow
     Start-Process "ms-settings:dateandtime"
     Wait-PCContinue
 }
+
+#------------------------7.JOIN-DOMAIN--------------------------
 function Join-PCDomain {
     Write-Header
     Write-Host "Join Computer to Domain" -ForegroundColor Yellow
 
-    $domainName = Read-Host "Enter Domain Name"
-    $ouPath = Read-Host "Enter OU Path or Press Enter to Skip"
+    $domainName = Read-Host "Enter domain name"
+    $ouPath = Read-Host "Enter OU path or press Enter to skip"
 
     if ([string]::IsNullOrWhiteSpace($domainName)) {
         Write-Host "Domain name was blank. No change made." -ForegroundColor Red
@@ -265,7 +268,7 @@ function Join-PCDomain {
     }
 
     try {
-        $cred = Get-Credential -Message "Enter Domain Credentials"
+        $cred = Get-Credential -Message "Enter domain credentials"
 
         if ([string]::IsNullOrWhiteSpace($ouPath)) {
             Add-Computer -DomainName $domainName -Credential $cred -Force -ErrorAction Stop
@@ -285,14 +288,15 @@ function Join-PCDomain {
     Wait-PCContinue
 }
 
+#----------------------8.INSTALL-WINGET------------------------------
+
 function Install-PCWinget {
     Write-Header
     Write-Host "Install WinGet" -ForegroundColor Yellow
     Write-Host ""
 
     try {
-        Write-Host "Installing WinGet" -ForegroundColor Cyan
-        Write-Host "Reboot & Run Again...If Needed" -ForegroundColor Cyan
+        Write-Host "Installing WinGet PowerShell Module..." -ForegroundColor Cyan
 
         Install-PackageProvider -Name NuGet -Force | Out-Null
 
@@ -308,21 +312,20 @@ function Install-PCWinget {
             -Scope AllUsers `
             -ErrorAction Stop | Out-Null
 
-        Write-Host "IT WILL CRASH DON'T WORRY" -ForegroundColor Cyan
-        Repair-WinGetPackageManager -AllUsers
+        Write-Host "Repairing WinGet package manager..." -ForegroundColor Cyan
+        Write-Host "This May Crash But It's Normal..."   -ForegroundColor Cyan
+
+        Repair-WinGetPackageManager -AllUsers | Out-Null
 
         Write-Host ""
-        Write-Host "WinGet Completed Successfully." -ForegroundColor Green
-
+        Write-Host "WinGet install/fix completed successfully."         -ForegroundColor Green
     }
     catch {
         Write-Host ""
-        Write-Host "WinGet Install Failed: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "WinGet install/fix failed: $($_.Exception.Message)" -ForegroundColor Red
     }
-
-    Wait-PCContinue
 }
-
+#-------------------------9.INSTALL-APPLICATIONS------------------------
 function Install-PCApps {
     Write-Header
     Write-Host "Install Applications" -ForegroundColor Yellow
@@ -331,7 +334,7 @@ function Install-PCApps {
     WinGet Install 7zip.7zip --silent -h --accept-package-agreements --accept-source-agreements
 
     Write-Host "Installing APS.exe..."
-    WinGet Install Famatech.AdvancedIPScanner --silent -h --accept-package-agreements --accept-source-agreements
+    Winget Install Famatech.AdvancedIPScanner --silent -h --accept-package-agreements --accept-source-agreements
 
     Write-Host "Installing AdobeReader..."
     WinGet Install Adobe.Acrobat.Reader.64-bit --silent -h --accept-package-agreements --accept-source-agreements
@@ -339,35 +342,34 @@ function Install-PCApps {
     Write-Host "Installing Putty..."
     WinGet Install PuTTY.PuTTY --silent -h --accept-package-agreements --accept-source-agreements
 
+    Write-Host "Installing Powershell 7..."
+    WinGet Install Microsoft.Powershell --silent -h --accept-package-agreements --accept-source-agreements
+ 
+    Write-Host "Installing Office..."
+    WinGet Install Microsoft.Office --silent -h --accept-package-agreements --accept-source-agreements
+
     Write-Host "Installing WRCFree..."
     WinGet Install WiseCleaner.WiseRegistryCleaner --silent -h --accept-package-agreements --accept-source-agreements
 
-    Write-Host "Installing Powershell..."
-    WinGet Install Microsoft.Powershell --Version 7.6.3.0 --silent -h --accept-package-agreements --accept-source-agreements
-
-    Write-Host "Installing Office..."
-    Winget Install Microsoft.Office --silent -h --accept-package-agreements --accept-source-agreements
-
-    Write-Host "Installing WinGet Updates..."
-    WinGet Upgrade --All 
-
-    Write-Host "Application Installations Complete." -ForegroundColor Green
+    Write-Host "Application install task complete." -ForegroundColor Green
     Wait-PCContinue
 }
 
+#------------------------10.ACTIVATE-WINDOWS---------------------------
 function Install-Activation {
     Write-Host "Activate Windows and Office" -ForegroundColor Yellow
 
     try { 
-        Invoke-RestMethod https://get.activated.win | Invoke-Expression
+        Write-Host "Activating Windows/Office..."
+        Invoke-WebRequest https://get.activated.win | Invoke-Expression
     }
     catch {
         Write-Host "Activation failed: $($_.Exception.Message)" -ForegroundColor Red
     }
-
-    Wait-PCContinue
+       Wait-PCContinue 
 }
 
+#------------------11.WINDOWS-UPDATES-------------------------
  function Invoke-PCWindowsUpdates {
     Write-Header
     Write-Host "Run Windows Updates" -ForegroundColor Yellow
@@ -376,8 +378,8 @@ function Install-Activation {
         Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -ErrorAction SilentlyContinue | Out-Null
         Install-Module PSWindowsUpdate -Force -Confirm:$false -ErrorAction Stop | Out-Null
         Import-Module PSWindowsUpdate -ErrorAction Stop | Out-Null
-        Install-WindowsUpdate -MicrosoftUpdate -AcceptAll -ErrorAction Stop
-        
+        Install-WindowsUpdate -MicrosoftUpdate -AcceptAll -IgnoreReboot
+        Confirm-PCReboot -Reason "Windows Updates Installed Successfully."
     }
     catch {
         Write-Host "Windows Update Failed: $($_.Exception.Message)" -ForegroundColor Red
@@ -386,6 +388,7 @@ function Install-Activation {
     Wait-PCContinue
 }
 
+#----------------------12.SYSTEM CLEANUP------------------------
 function Invoke-PCCleanup {
     Write-Header
     Write-Host "System Cleanup" -ForegroundColor Yellow
@@ -395,10 +398,10 @@ function Invoke-PCCleanup {
         Remove-Item "$env:TEMP\*" -Recurse -Force -ErrorAction SilentlyContinue
         Remove-Item "C:\Windows\Temp\*" -Recurse -Force -ErrorAction SilentlyContinue
 
-        Write-Host "Running Disk Cleanup..."
+        Write-Host "Running Disk Cleanup component cleanup..."
         DISM /Online /Cleanup-Image /StartComponentCleanup
 
-        Write-Host "Running Clean Manager..."
+        Write-Host "Running Disk Cleanup for System Files..."
         Cleanmgr /sageset:1 | Out-Null
         $cleanmgrArgs = "/sagerun:1"
         Start-Process "cleanmgr.exe" -ArgumentList $cleanmgrArgs -Wait
@@ -409,7 +412,7 @@ function Invoke-PCCleanup {
         Write-Host "Registry Cleanup - Removing old Windows Update entries..."
         Start-Process "C:\Program Files (x86)\Wise\Wise Registry Cleaner\WiseRegCleaner.exe" -Wait
 
-        Write-Host "Cleanup Complete." -ForegroundColor Green
+        Write-Host "Cleanup complete." -ForegroundColor Green
     }
     catch {
         Write-Host "Cleanup failed: $($_.Exception.Message)" -ForegroundColor Red
@@ -417,37 +420,41 @@ function Invoke-PCCleanup {
 
     Wait-PCContinue
 }
-
+#------------------------13.RESTART-COMPUTER---------------------------
+function Restart-PCComputer {
+    Write-Header
+    Write-Host "Restart Computer" -ForegroundColor Yellow
+    Start-Process "shutdown.exe" -ArgumentList "/r /t 3" -NoNewWindow
+}
+#------------------Utility Functions For Script------------------------
 function Confirm-PCReboot {
 
     param(
-        [string]$Reason = "Changes Require a Reboot."
+        [string]$Reason = "Changes require a reboot."
     )
 
     Write-Host ""
     Write-Host $Reason -ForegroundColor Yellow
     Write-Host ""
 
-    $Reboot = Read-Host "Reboot Now? (Y/N)"
+    $Reboot = Read-Host "Reboot now? (Y/N)"
 
     if ($Reboot.ToUpper() -eq "Y") {
         Restart-Computer -Force
     }
-    Wait-PCContinue
+}
+
+function Wait-PCContinue {
+    Read-Host "Press Enter to continue"
 }
 
 function Restart-PCComputer {
     Write-Header
-    $confirm = Read-Host "Reboot Now? Type Y to reboot"
-    if ($confirm -eq "Y") {
-        Stop-Transcript | Out-Null
-        Restart-Computer -Force
+    Write-Host "Restart Computer" -ForegroundColor Yellow
+    Start-Process "shutdown.exe" -ArgumentList "/r /t 3" -NoNewWindow
     }
-    else {
-        Write-Host "Reboot Cancelled." -ForegroundColor Yellow
-        Wait-PCContinue
-    }
-}
+    
+
 
 function Enable-PCAutoStart {
 
@@ -475,9 +482,7 @@ function Disable-PCAutoStart {
         -ErrorAction SilentlyContinue
 }
 
-
-Enable-PCAutoStart
-
+#------------------MENU-Script-------------------
 do {
     Write-Header
     Write-Host "1. Show-PCSystemInfo"
@@ -485,14 +490,14 @@ do {
     Write-Host "3. Disable Indexing"
     Write-Host "4. Power Management"
     Write-Host "5. Configure Network"
-    Write-Host "6. Date & Time Settings"
+    Write-Host "6. Set Date/Time"
     Write-Host "7. Join Domain"
     Write-Host "8. Install Winget"
     Write-Host "9. Install Applications"
-    Write-Host "10. Activation"
-    Write-Host "11. Run Windows Updates"
-    Write-Host "13. System Cleanup"
-    Write-Host "14. Reboot"
+    Write-Host "10. Activate Windows/Office"
+    Write-Host "11. Windows Updates"
+    Write-Host "12. System Cleanup"
+    Write-Host "13. Restart Computer"
     Write-Host "0. Exit"
     Write-Host ""
 
@@ -504,20 +509,18 @@ do {
         "3" { Disable-Indexing }
         "4" { Show-PCPowerManagement }
         "5" { Set-PCNetwork }
-        "6" { Open-PCDateTimeSettings }
+        "6" { Set-PCDateTimeSettings }
         "7" { Join-PCDomain }
         "8" { Install-PCWinget }
         "9" { Install-PCApps }
-        "11" { Install-Activation }
-        "12" { Invoke-PCWindowsUpdates }
-        "13" { Invoke-PCCleanup }
-        "14" { Restart-PCComputer }
-        "0" 
-        
-        { Disable-PCAutoStart
+        "10" { Install-Activation }
+        "11" { Invoke-PCWindowsUpdates }
+        "12" { Invoke-PCCleanup }
+        "13" { Restart-PCComputer }
+        "0" { Disable-PCAutoStart
               Write-Host "Exiting $AppName..." -ForegroundColor Yellow }
         default {
-            Write-Host "Invalid Option." -ForegroundColor Red
+            Write-Host "Invalid option." -ForegroundColor Red
             Wait-PCContinue
         }
     }
