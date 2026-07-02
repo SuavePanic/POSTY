@@ -509,7 +509,7 @@ do {
         "3" { Disable-Indexing }
         "4" { Show-PCPowerManagement }
         "5" { Set-PCNetwork }
-        "6" { Set-PCDateTimeSettings }
+        "6" { Open-PCDateTimeSettings }
         "7" { Join-PCDomain }
         "8" { Install-PCWinget }
         "9" { Install-PCApps }
