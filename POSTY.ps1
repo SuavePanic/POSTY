@@ -384,7 +384,6 @@ function Install-Activation {
         Write-Host "Windows Update Failed: $($_.Exception.Message)" -ForegroundColor Red
     }
 
-    Wait-PCContinue
 }
 
 #=====================================SYSTEM CLEANUP======================================#
