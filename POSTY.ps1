@@ -47,7 +47,7 @@ Start-Transcript -Path $LogFile -Append | Out-Null
 function Wait-PCContinue {
     Read-Host "Press Enter to continue"
 }
-
+#======================================HEADER=============================================#
 function Write-Header {
     Clear-Host
     Write-Host "========================================"   -ForegroundColor Yellow           
@@ -64,8 +64,8 @@ function Write-Header {
     Write-Host ""
 }
 
-#------------------Menu Items List------------------------------------
-#------------------------1.SHOW-SYSTEM-INFO---------------------------
+
+#================================SYSTEM-INFORMATION=======================================#
 function Show-PCSystemInfo {
 
     Clear-Host
@@ -79,9 +79,8 @@ function Show-PCSystemInfo {
 
     Wait-PCContinue
 }
+#==================================RENAME-COMPUTER========================================#
 
-
-#------------------------2.RENAME-COMPUTER---------------------------
 function Rename-PCComputer {
     Write-Header
     Write-Host "Rename Computer" -ForegroundColor Yellow
@@ -105,7 +104,7 @@ function Rename-PCComputer {
 
 }
 
-#------------------------3.DISABLE-INDEXING---------------------------
+#=====================================DISABLE-INDEXING====================================#
 function Disable-Indexing {
     Write-Header
     Write-Host "Disable Indexing on C: Drive" -ForegroundColor Yellow
@@ -136,7 +135,7 @@ else {
     Wait-PCContinue
 }
 
-#------------------------4.POWER-MANAGEMENT---------------------------
+#=====================================POWER-MGMT===========================================#
 function Show-PCPowerManagement {
 
     do {
@@ -192,7 +191,7 @@ function Show-PCPowerManagement {
     } while ($true)
 }
 
-#------------------------5.CONFIGURE-NETWORK----------------------------
+#=====================================NETWORK=============================================#
 function Set-PCNetwork {
     Write-Header
     Write-Host "Configure Network" -ForegroundColor Yellow
@@ -245,7 +244,7 @@ function Set-PCNetwork {
     Wait-PCContinue   
 }
 
-#------------------------6.DATE/TIME---------------------------
+#=====================================DATE/TIME===========================================#
 function Open-PCDateTimeSettings {
     
     Write-Host "Opening Date & Time Settings..." -ForegroundColor Yellow
@@ -253,7 +252,7 @@ function Open-PCDateTimeSettings {
     Wait-PCContinue
 }
 
-#------------------------7.JOIN-DOMAIN--------------------------
+#=====================================JOIN-DOMAIN=========================================#
 function Join-PCDomain {
     Write-Header
     Write-Host "Join Computer to Domain" -ForegroundColor Yellow
@@ -288,7 +287,7 @@ function Join-PCDomain {
     Wait-PCContinue
 }
 
-#----------------------8.INSTALL-WINGET------------------------------
+#==================================INSTALL-WINGET=========================================#
 
 function Install-PCWinget {
     Write-Header
@@ -325,7 +324,7 @@ function Install-PCWinget {
         Write-Host "WinGet install/fix failed: $($_.Exception.Message)" -ForegroundColor Red
     }
 }
-#-------------------------9.INSTALL-APPLICATIONS------------------------
+#===================================INSTALL-APPS==========================================#
 function Install-PCApps {
     Write-Header
     Write-Host "Install Applications" -ForegroundColor Yellow
@@ -355,7 +354,7 @@ function Install-PCApps {
     Wait-PCContinue
 }
 
-#------------------------10.ACTIVATE-WINDOWS---------------------------
+#=====================================ACTIVATE-WINDOWS====================================#
 function Install-Activation {
     Write-Host "Activate Windows and Office" -ForegroundColor Yellow
 
@@ -369,7 +368,7 @@ function Install-Activation {
        Wait-PCContinue 
 }
 
-#------------------11.WINDOWS-UPDATES-------------------------
+#==================================WINDOWS-UPDATE=========================================#
  function Invoke-PCWindowsUpdates {
     Write-Header
     Write-Host "Run Windows Updates" -ForegroundColor Yellow
@@ -388,7 +387,7 @@ function Install-Activation {
     Wait-PCContinue
 }
 
-#----------------------12.SYSTEM CLEANUP------------------------
+#=====================================SYSTEM CLEANUP======================================#
 function Invoke-PCCleanup {
     Write-Header
     Write-Host "System Cleanup" -ForegroundColor Yellow
@@ -420,13 +419,13 @@ function Invoke-PCCleanup {
 
     Wait-PCContinue
 }
-#------------------------13.RESTART-COMPUTER---------------------------
+#==================================RESTART-COMPUTER=======================================#
 function Restart-PCComputer {
     Write-Header
     Write-Host "Restart Computer" -ForegroundColor Yellow
     Start-Process "shutdown.exe" -ArgumentList "/r /t 3" -NoNewWindow
 }
-#------------------Utility Functions For Script------------------------
+#==================================UTILITY FUNCTIONS======================================#
 function Confirm-PCReboot {
 
     param(
@@ -482,7 +481,7 @@ function Disable-PCAutoStart {
         -ErrorAction SilentlyContinue
 }
 
-#------------------MENU-Script-------------------
+#=====================================MENU-Script==========================================#
 do {
     Write-Header
     Write-Host "1. Show-PCSystemInfo"
