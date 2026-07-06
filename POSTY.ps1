@@ -4,7 +4,7 @@
 POSTY-CONFIG
 Windows Deployment Toolkit
 
-Version : 1.8.7
+Version : 1.8.9
 Author  : SuavePanic
 Project : https://github.com/SuavePanic/POSTY
 
@@ -25,28 +25,25 @@ Features:
 - Rename computer
 - Disable Indexing
 - Power Management
-- Configure Static IP or DHCP
+- Configure-Network
 - Set Time and Date
 - Join Domain
 - Install-WinGet
 - Install-APPS
 - Install-Activation
-- Windows Updates
-- System Cleanup
+- Windows-Updates
+- System-Cleanup
 - Reboot
 #>
 
 $AppName = "POSTY"
-$Version = "1.8.7"
+$Version = "1.8.9"
 $LogRoot = "C:\Logs\POSTY"
 $LogFile = Join-Path $LogRoot "POSTY-$(Get-Date -Format 'yyyyMMdd-HHmmss').log"
 
 New-Item -Path $LogRoot -ItemType Directory -Force | Out-Null
 Start-Transcript -Path $LogFile -Append | Out-Null
 
-function Wait-PCContinue {
-    Read-Host "Press Enter to continue"
-}
 #======================================HEADER=============================================#
 function Write-Header {
     Clear-Host
@@ -64,6 +61,7 @@ function Write-Header {
     Write-Host ""
 }
 
+Disable-PCAutoStart
 
 #================================SYSTEM-INFORMATION=======================================#
 function Show-PCSystemInfo {
@@ -87,25 +85,27 @@ function Rename-PCComputer {
     $newName = Read-Host "Enter new computer name"
 
     if ([string]::IsNullOrWhiteSpace($newName)) {
-        Write-Host "Computer name was blank. No change made." -ForegroundColor Red
+        Write-Host "Computer name was blank. No change Made."       -ForegroundColor Red
         Wait-PCContinue
         return
     }
 
     try {
         Rename-Computer -NewName $newName -Force -ErrorAction Stop
-        Write-Host "Computer renamed to $newName. Reboot required." -ForegroundColor Green
-        Confirm-PCReboot -Reason "Computer renamed successfully."
+        Write-Host "Computer renamed to $newName. Reboot Required." -ForegroundColor Green
+        
+        Enable-PCAutoStart
+
+        Confirm-PCReboot -Reason "Computer Renamed Successfully."
         }
         
     catch {
-        Write-Host "Rename failed: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "Rename failed: $($_.Exception.Message)"         -ForegroundColor Red
     }
-
 }
 
 #=====================================DISABLE-INDEXING====================================#
-function Disable-Indexing {
+function Disable-PCIndexing {
     Write-Header
     Write-Host "Disable Indexing on C: Drive" -ForegroundColor Yellow
 
@@ -278,17 +278,16 @@ function Join-PCDomain {
 
         Write-Host "Computer joined to domain successfully." -ForegroundColor Green
         Write-Host "A reboot is required." -ForegroundColor Yellow
+        Enable-PCAutoStart
         Confirm-PCReboot -Reason "Domain join successful."        
     }
     catch {
         Write-Host "Domain join failed: $($_.Exception.Message)" -ForegroundColor Red
     }
 
-    Wait-PCContinue
 }
 
 #==================================INSTALL-WINGET=========================================#
-
 function Install-PCWinget {
     Write-Header
     Write-Host "Install WinGet" -ForegroundColor Yellow
@@ -350,6 +349,9 @@ function Install-PCApps {
     Write-Host "Installing WRCFree..."
     WinGet Install WiseCleaner.WiseRegistryCleaner --silent -h --accept-package-agreements --accept-source-agreements
 
+    Write-Host "Application Updates..."
+    WinGet Upgrade --all --silent -h --accept-package-agreements --accept-source-agreements
+
     Write-Host "Application install task complete." -ForegroundColor Green
     Wait-PCContinue
 }
@@ -378,6 +380,7 @@ function Install-Activation {
         Install-Module PSWindowsUpdate -Force -Confirm:$false -ErrorAction Stop | Out-Null
         Import-Module PSWindowsUpdate -ErrorAction Stop | Out-Null
         Install-WindowsUpdate -MicrosoftUpdate -AcceptAll -IgnoreReboot
+        Enable-PCAutoStart
         Confirm-PCReboot -Reason "Windows Updates Installed Successfully."
     }
     catch {
@@ -386,7 +389,7 @@ function Install-Activation {
 
 }
 
-#=====================================SYSTEM CLEANUP======================================#
+#=====================================SYSTEM-CLEANUP======================================#
 function Invoke-PCCleanup {
     Write-Header
     Write-Host "System Cleanup" -ForegroundColor Yellow
@@ -418,13 +421,8 @@ function Invoke-PCCleanup {
 
     Wait-PCContinue
 }
-#==================================RESTART-COMPUTER=======================================#
-function Restart-PCComputer {
-    Write-Header
-    Write-Host "Restart Computer" -ForegroundColor Yellow
-    Start-Process "shutdown.exe" -ArgumentList "/r /t 3" -NoNewWindow
-}
-#==================================UTILITY FUNCTIONS======================================#
+
+#==================================UTILITY-FUNCTIONS======================================#
 function Confirm-PCReboot {
 
     param(
@@ -437,8 +435,14 @@ function Confirm-PCReboot {
 
     $Reboot = Read-Host "Reboot now? (Y/N)"
 
-    if ($Reboot.ToUpper() -eq "Y") {
+    if ($Reboot.Trim().ToUpper() -eq "Y") {
+        Write-Host "Rebooting now..." -ForegroundColor Red
+        Start-Sleep -Seconds 2
         Restart-Computer -Force
+    }
+    else {
+        Write-Host "Reboot skipped." -ForegroundColor Cyan
+        Wait-PCContinue
     }
 }
 
@@ -449,14 +453,18 @@ function Wait-PCContinue {
 function Restart-PCComputer {
     Write-Header
     Write-Host "Restart Computer" -ForegroundColor Yellow
-    Start-Process "shutdown.exe" -ArgumentList "/r /t 3" -NoNewWindow
-    }
+    Write-Host ""
+    Write-Host "Computer will restart in 3 seconds..." -ForegroundColor Red
+
+    shutdown.exe /r /t 3
+}
     
-
-
 function Enable-PCAutoStart {
 
     $ScriptPath = $PSCommandPath
+if (-not $ScriptPath) {
+    $ScriptPath = $MyInvocation.MyCommand.Path
+}
 
     $Action = New-ScheduledTaskAction `
         -Execute "powershell.exe" `
@@ -480,22 +488,22 @@ function Disable-PCAutoStart {
         -ErrorAction SilentlyContinue
 }
 
-#=====================================MENU-Script==========================================#
+#=====================================MENU==============================================#
 do {
     Write-Header
-    Write-Host "1. Show-PCSystemInfo"
-    Write-Host "2. Rename Computer"
-    Write-Host "3. Disable Indexing"
-    Write-Host "4. Power Management"
-    Write-Host "5. Configure Network"
-    Write-Host "6. Set Date/Time"
-    Write-Host "7. Join Domain"
-    Write-Host "8. Install Winget"
-    Write-Host "9. Install Applications"
-    Write-Host "10. Activate Windows/Office"
-    Write-Host "11. Windows Updates"
-    Write-Host "12. System Cleanup"
-    Write-Host "13. Restart Computer"
+    Write-Host "1. Show-SystemInfo"
+    Write-Host "2. Rename-Computer"
+    Write-Host "3. Disable-Indexing"
+    Write-Host "4. Power-Management"
+    Write-Host "5. Configure-Network"
+    Write-Host "6. Set-Date/Time"
+    Write-Host "7. Join-Domain"
+    Write-Host "8. Install-Winget"
+    Write-Host "9. Install-Applications"
+    Write-Host "10. Activation"
+    Write-Host "11. Windows-Updates"
+    Write-Host "12. System-Cleanup"
+    Write-Host "13. Restart-Computer"
     Write-Host "0. Exit"
     Write-Host ""
 
@@ -504,7 +512,7 @@ do {
     switch ($choice) {
         "1" { Show-PCSystemInfo }
         "2" { Rename-PCComputer }
-        "3" { Disable-Indexing }
+        "3" { Disable-PCIndexing }
         "4" { Show-PCPowerManagement }
         "5" { Set-PCNetwork }
         "6" { Open-PCDateTimeSettings }
