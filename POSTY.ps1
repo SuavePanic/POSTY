@@ -61,8 +61,6 @@ function Write-Header {
     Write-Host ""
 }
 
-Disable-PCAutoStart
-
 #================================SYSTEM-INFORMATION=======================================#
 function Show-PCSystemInfo {
 
@@ -422,6 +420,38 @@ function Invoke-PCCleanup {
     Wait-PCContinue
 }
 
+function Invoke-PC909 {
+
+    Write-Header
+
+    Write-Host ""
+    Write-Host "FEDERATION ACCESS CODE ACCEPTED" -ForegroundColor Green
+    Write-Host ""
+    Write-Host "Initializing Legacy Systems..." -ForegroundColor Yellow
+    Start-Sleep 1
+
+    Write-Host ""
+    Write-Host "Connecting to BOB..." -ForegroundColor Cyan
+    Start-Sleep 1
+
+    Write-Host ""
+    Write-Host "Bridge Status: ONLINE" -ForegroundColor Green
+    Write-Host "Chief Reynolds: In Breakroom" -ForegroundColor Yellow
+    Write-Host "Apollo: Installing AOL..." -ForegroundColor Yellow
+    Write-Host "BOB: Monitoring Clipboard..." -ForegroundColor Magenta
+
+    Write-Host ""
+    Write-Host "Special Thanks:" -ForegroundColor Cyan
+    Write-Host "  Lord Helmet"
+    Write-Host "  BOB"
+    Write-Host "  Apollo"
+    Write-Host ""
+    Write-Host "For the One Piece of Cake." -ForegroundColor Green
+    Write-Host "Code-909 Executed Successfully." -ForegroundColor Blue
+
+    Wait-PCContinue
+}
+
 #==================================UTILITY-FUNCTIONS======================================#
 function Confirm-PCReboot {
 
@@ -523,6 +553,7 @@ do {
         "11" { Invoke-PCWindowsUpdates }
         "12" { Invoke-PCCleanup }
         "13" { Restart-PCComputer }
+        "909" { Invoke-PC909 }
         "0" { Disable-PCAutoStart
               Write-Host "Exiting $AppName..." -ForegroundColor Yellow }
         default {
