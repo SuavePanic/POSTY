@@ -4,7 +4,7 @@
 POSTY-CONFIG
 Windows Deployment Toolkit
 
-Version : 1.8.9
+Version : 1.9.0
 Author  : SuavePanic
 Project : https://github.com/SuavePanic/POSTY
 
@@ -37,7 +37,7 @@ Features:
 #>
 
 $AppName = "POSTY"
-$Version = "1.8.9"
+$Version = "1.9.0"
 $LogRoot = "C:\Logs\POSTY"
 $LogFile = Join-Path $LogRoot "POSTY-$(Get-Date -Format 'yyyyMMdd-HHmmss').log"
 
@@ -276,8 +276,7 @@ function Join-PCDomain {
 
         Write-Host "Computer joined to domain successfully." -ForegroundColor Green
         Write-Host "A reboot is required." -ForegroundColor Yellow
-        Enable-PCAutoStart
-        Confirm-PCReboot -Reason "Domain join successful."        
+        Confirm-PCReboot -Reason "Domain Join Successful."        
     }
     catch {
         Write-Host "Domain join failed: $($_.Exception.Message)" -ForegroundColor Red
