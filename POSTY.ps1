@@ -92,7 +92,7 @@ function Rename-PCComputer {
         Rename-Computer -NewName $newName -Force -ErrorAction Stop
         Write-Host "Computer renamed to $newName. Reboot Required." -ForegroundColor Green
         
-        Enable-PCAutoStart
+        Enable-PCAutoStart output | Out-Null 
 
         Confirm-PCReboot -Reason "Computer Renamed Successfully."
         }
@@ -378,7 +378,6 @@ function Install-Activation {
         Install-Module PSWindowsUpdate -Force -Confirm:$false -ErrorAction Stop | Out-Null
         Import-Module PSWindowsUpdate -ErrorAction Stop | Out-Null
         Install-WindowsUpdate -MicrosoftUpdate -AcceptAll -IgnoreReboot
-        Enable-PCAutoStart
         Confirm-PCReboot -Reason "Windows Updates Installed Successfully."
     }
     catch {
