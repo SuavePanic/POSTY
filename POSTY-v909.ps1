@@ -339,7 +339,10 @@ function Install-PCApps {
 
     Write-Host "Installing Powershell 7..."
     WinGet Install Microsoft.Powershell --silent -h --accept-package-agreements --accept-source-agreements
- 
+
+    Write-Host "Installing Winfile..."
+    WinGet Install Microsoft.WinFile --silent -h --accept-package-agreements --accept-source-agreements
+
     Write-Host "Installing Office..."
     WinGet Install Microsoft.Office --silent -h --accept-package-agreements --accept-source-agreements
 
