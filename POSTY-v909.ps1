@@ -360,34 +360,13 @@ function Install-PCApps {
 function Install-PCGit {
     Write-Host "Installing git..."
     WinGet Install Git.Git --silent -h --accept-package-agreements --accept-source-agreements
-
-    Write-Host "Setting up Git..." 
-    Write-Host "Configuring Git Username&Email..." 
-    git config --global user.name "SuavePanic" 
-    git config --global user.email "zjaco1@gmail.com"
-    Write-Host ""
-    Write-Host ""
-    Write-Host "Creating C:\VS folder for Git Repositories..." 
-    mkdir C:\VS
-    Write-Host "Cloning Git Repositories..." 
-    git clone https://github.com/SuavePanic/POSTY.git
-    git clone https://github.com/SuavePanic/DEV.git
-    git clone https://github.com/SuavePanic/MISC.git
-    git clone https://github.com/SuavePanic/BETA.git
-    Write-Host ""
-    Write-Host "Git Install Complete" -ForegroundColor Green
 }
 
 function Install-PCVSCode {
     Write-Host "Installing Visual Studio Code..."
     WinGet Install microsoft.visualstudiocode --silent -h --accept-package-agreements --accept-source-agreements
-    Write-Host "Setting up Visual Studio Code Extensions..."
-    code --install-extension ms-vscode.PowerShell 
-    code --install-extension usernamehw.errorlens 
-    code --install-extension yzhang.markdown-all-in-one
-    code --install-extension eamodio.gitlens
-    Write-Host "Visual Studio Code Install Complete" -ForegroundColor Green
 }
+
 
 #=====================================ACTIVATE-WINDOWS====================================#
 function Install-Activation {
