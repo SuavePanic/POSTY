@@ -4,7 +4,7 @@
 POSTY-CONFIG
 Windows Deployment Toolkit
 
-Version : 1.9.0
+Version : 909
 Author  : SuavePanic
 Project : https://github.com/SuavePanic/POSTY
 
@@ -37,7 +37,7 @@ Features:
 #>
 
 $AppName = "POSTY"
-$Version = "1.9.0"
+$Version = "909"
 $LogRoot = "C:\Logs\POSTY"
 $LogFile = Join-Path $LogRoot "POSTY-$(Get-Date -Format 'yyyyMMdd-HHmmss').log"
 
