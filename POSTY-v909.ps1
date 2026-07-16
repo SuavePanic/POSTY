@@ -356,20 +356,6 @@ function Install-PCApps {
     Wait-PCContinue
 }
 
-#===================================INSTALL-GIT&VSCode======================================#
-function Install-PCGit {
-    Write-Host "Installing git..."
-    WinGet Install Git.Git --silent -h --accept-package-agreements --accept-source-agreements
-    Wait-PCContinue
-}
-
-function Install-PCVSCode {
-    Write-Host "Installing Visual Studio Code..."
-    WinGet Install microsoft.visualstudiocode --silent -h --accept-package-agreements --accept-source-agreements
-    Wait-PCContinue
-}
-
-
 #=====================================ACTIVATE-WINDOWS====================================#
 function Install-Activation {
     Write-Host "Activate Windows and Office" -ForegroundColor Yellow
