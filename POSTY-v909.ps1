@@ -531,12 +531,10 @@ do {
     Write-Host "7. Join-Domain"
     Write-Host "8. Install-Winget"
     Write-Host "9. Install-Apps"
-    Write-Host "10. Install-Git"
-    Write-Host "11. Install-VSCode"
-    Write-Host "12. Activation"
-    Write-Host "13. Windows-Updates"
-    Write-Host "14. System-Cleanup"
-    Write-Host "15. Restart-Computer"
+    Write-Host "10. Activation"
+    Write-Host "11. Windows-Updates"
+    Write-Host "12. System-Cleanup"
+    Write-Host "13. Restart-Computer"
     Write-Host "0. Exit"
     Write-Host ""
 
@@ -552,12 +550,10 @@ do {
         "7" { Join-PCDomain }
         "8" { Install-PCWinget }
         "9" { Install-PCApps }
-        "10" { Install-PCGit }
-        "11" { Install-PCVSCode }
-        "12" { Install-Activation }
-        "13" { Invoke-PCWindowsUpdates }
-        "14" { Invoke-PCCleanup }
-        "15" { Restart-PCComputer }
+        "10" { Install-Activation }
+        "11" { Invoke-PCWindowsUpdates }
+        "12" { Invoke-PCCleanup }
+        "13" { Restart-PCComputer }
         "909" { Invoke-PC909 }
         "0" { Disable-PCAutoStart
               Write-Host "Exiting $AppName..." -ForegroundColor Yellow }
