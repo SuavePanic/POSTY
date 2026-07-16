@@ -346,6 +346,9 @@ function Install-PCApps {
     Write-Host "Installing Office..."
     WinGet Install Microsoft.Office --silent -h --accept-package-agreements --accept-source-agreements
 
+    Write-Host "Installing Notepad++..."
+    Winget Install Notepad++.Notepad++ --silent -h --accept-package-agreements --accept-source-agreements
+
     Write-Host "Installing WRCFree..."
     WinGet Install WiseCleaner.WiseRegistryCleaner --silent -h --accept-package-agreements --accept-source-agreements
 
@@ -360,11 +363,13 @@ function Install-PCApps {
 function Install-PCGit {
     Write-Host "Installing git..."
     WinGet Install Git.Git --silent -h --accept-package-agreements --accept-source-agreements
+    Wait-PCContinue
 }
 
 function Install-PCVSCode {
     Write-Host "Installing Visual Studio Code..."
     WinGet Install microsoft.visualstudiocode --silent -h --accept-package-agreements --accept-source-agreements
+    Wait-PCContinue
 }
 
 
