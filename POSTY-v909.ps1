@@ -346,9 +346,6 @@ function Install-PCApps {
     Write-Host "Installing Office..."
     WinGet Install Microsoft.Office --silent -h --accept-package-agreements --accept-source-agreements
 
-    Write-Host "Installing Notepad++..."
-    Winget Install Notepad++.Notepad++ --silent -h --accept-package-agreements --accept-source-agreements
-
     Write-Host "Installing WRCFree..."
     WinGet Install WiseCleaner.WiseRegistryCleaner --silent -h --accept-package-agreements --accept-source-agreements
 
