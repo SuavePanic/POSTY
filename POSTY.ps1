@@ -4,7 +4,7 @@
 POSTY-CONFIG
 Windows Deployment Toolkit
 
-Version : 1.9.0
+Version : 1.9.6
 Author  : SuavePanic
 Project : https://github.com/SuavePanic/POSTY
 
@@ -24,6 +24,7 @@ Features:
 - Show-PCSystemInfo
 - Rename computer
 - Disable Indexing
+- Remove AppxPackages
 - Power Management
 - Configure-Network
 - Set Time and Date
@@ -37,7 +38,7 @@ Features:
 #>
 
 $AppName = "POSTY"
-$Version = "1.9.0"
+$Version = "1.9.6"
 $LogRoot = "C:\Logs\POSTY"
 $LogFile = Join-Path $LogRoot "POSTY-$(Get-Date -Format 'yyyyMMdd-HHmmss').log"
 
@@ -48,7 +49,7 @@ Start-Transcript -Path $LogFile -Append | Out-Null
 function Write-Header {
     Clear-Host
     Write-Host "========================================"   -ForegroundColor Yellow           
-    Write-Host "            $AppName v$Version"             -ForegroundColor Green
+    Write-Host "             $AppName v$Version"             -ForegroundColor Green
     Write-Host "       -WINDOWS POST-INSTALL TOOL-"         -ForegroundColor Green
     Write-Host "========================================"   -ForegroundColor Yellow
     Write-Host "  Install Winget Before Installing APPS"    -ForegroundColor Green
@@ -129,7 +130,39 @@ else {
     catch {
         Write-Host "Failed to disable indexing: $($_.Exception.Message)" -ForegroundColor Red
     }
+    Wait-PCContinue
+}
 
+function Uninstall-AppxPackage {
+    Write-Host "Removing-AppxPackages..."
+
+    $AppsToRemove = @(
+    "*MSTEAMS*"
+    "Microsoft.BingSearch"
+    "Microsoft.Todos"
+    "Microsoft.YourPhone"
+    "Microsoft.WindowsCamera"
+    "Microsoft.WindowsSoundRecorder"
+    "Microsoft.BingWeather"
+    "Microsoft.ZuneMusic"
+    "Microsoft.WindowsAlarms"
+    "Microsoft.GetHelp"
+    "Microsoft.BingNews"
+    "Microsoft.XboxSpeechToTextOverlay"
+    "Microsoft.XboxGamingOverlay"
+    "Microsoft.XboxIdentityProvider"
+    "Microsoft.Xbox.TCUI" 
+    "Microsoft.ScreenSketch"
+    "Clipchamp.Clipchamp"
+    "Microsoft.GamingApp"
+    "Microsoft.MicrosoftStickyNotes"	
+)
+
+foreach ($App in $AppsToRemove) {
+    Get-AppxPackage -Name $App -AllUsers |
+        Remove-AppxPackage -AllUsers
+    
+}
     Wait-PCContinue
 }
 
@@ -261,7 +294,7 @@ function Join-PCDomain {
     if ([string]::IsNullOrWhiteSpace($domainName)) {
         Write-Host "Domain name was blank. No change made." -ForegroundColor Red
         Wait-PCContinue
-        return
+        
     }
 
     try {
@@ -276,7 +309,8 @@ function Join-PCDomain {
 
         Write-Host "Computer joined to domain successfully." -ForegroundColor Green
         Write-Host "A reboot is required." -ForegroundColor Yellow
-        Confirm-PCReboot -Reason "Domain Join Successful."        
+        Confirm-PCReboot -Reason "Computer Joined Domain Successfully." 
+
     }
     catch {
         Write-Host "Domain join failed: $($_.Exception.Message)" -ForegroundColor Red
@@ -320,6 +354,7 @@ function Install-PCWinget {
         Write-Host "WinGet install/fix failed: $($_.Exception.Message)" -ForegroundColor Red
     }
 }
+
 #===================================INSTALL-APPS==========================================#
 function Install-PCApps {
     Write-Header
@@ -339,27 +374,34 @@ function Install-PCApps {
 
     Write-Host "Installing Powershell 7..."
     WinGet Install Microsoft.Powershell --silent -h --accept-package-agreements --accept-source-agreements
- 
-    Write-Host "Installing Office..."
-    WinGet Install Microsoft.Office --silent -h --accept-package-agreements --accept-source-agreements
+
+    Write-Host "Installing Winfile..."
+    Winget Install Microsoft.Winfile --silent -h --accept-package-agreements --accept-source-agreements
+    
+    Write-Host "Installing Chocolatey..."
+    Winget Install Chocolatey.Chocolatey --silent -h --accept-package-agreements --accept-source-agreements
+
+    Write-Host "Installing Office365..."
+    Invoke-WebRequest -Uri "https://officecdn.microsoft.com/pr/wsus/setup.exe" -OutFile "C:\Temp\OFFICE.exe"
+    C:\Temp\OFFICE.exe /Configure C:\Temp\CONFIG.xml
 
     Write-Host "Installing WRCFree..."
     WinGet Install WiseCleaner.WiseRegistryCleaner --silent -h --accept-package-agreements --accept-source-agreements
 
     Write-Host "Application Updates..."
-    WinGet Upgrade --all --silent -h --accept-package-agreements --accept-source-agreements
+    WinGet Upgrade --all
 
     Write-Host "Application install task complete." -ForegroundColor Green
     Wait-PCContinue
 }
 
 #=====================================ACTIVATE-WINDOWS====================================#
-function Install-Activation {
+function Install-PCActivation {
     Write-Host "Activate Windows and Office" -ForegroundColor Yellow
 
     try { 
         Write-Host "Activating Windows/Office..."
-        Invoke-WebRequest https://get.activated.win | Invoke-Expression
+        Invoke-WebRequest -uri -UseBasicParsing https://get.activated.win | Invoke-Expression
     }
     catch {
         Write-Host "Activation failed: $($_.Exception.Message)" -ForegroundColor Red
@@ -464,7 +506,7 @@ function Confirm-PCReboot {
     $Reboot = Read-Host "Reboot now? (Y/N)"
 
     if ($Reboot.Trim().ToUpper() -eq "Y") {
-        Write-Host "Rebooting now..." -ForegroundColor Red
+        Write-Host "Rebooting now..." -ForegroundColor Light-Blue
         Start-Sleep -Seconds 2
         Restart-Computer -Force
     }
@@ -482,9 +524,9 @@ function Restart-PCComputer {
     Write-Header
     Write-Host "Restart Computer" -ForegroundColor Yellow
     Write-Host ""
-    Write-Host "Computer will restart in 3 seconds..." -ForegroundColor Red
+    Write-Host "Computer will restart in 3 seconds..." -ForegroundColor Blue
 
-    shutdown.exe /r /t 3
+    shutdown.exe /r /t 3 
 }
     
 function Enable-PCAutoStart {
@@ -522,35 +564,39 @@ do {
     Write-Host "1. Show-SystemInfo"
     Write-Host "2. Rename-Computer"
     Write-Host "3. Disable-Indexing"
-    Write-Host "4. Power-Management"
-    Write-Host "5. Configure-Network"
-    Write-Host "6. Set-Date/Time"
-    Write-Host "7. Join-Domain"
-    Write-Host "8. Install-Winget"
-    Write-Host "9. Install-Applications"
-    Write-Host "10. Activation"
-    Write-Host "11. Windows-Updates"
-    Write-Host "12. System-Cleanup"
-    Write-Host "13. Restart-Computer"
+    Write-Host "4  AppxPackage-Removal"
+    Write-Host "5. Power-Management"
+    Write-Host "6. Configure-Network"
+    Write-Host "7. Set-Date/Time"
+    Write-Host "8. Join-Domain"
+    Write-Host "9. Install-Winget"
+    Write-Host "10. Install-Apps"
+    Write-Host "11. Activation"
+    Write-Host "12. Windows-Updates"
+    Write-Host "13. System-Cleanup"
+    Write-Host "14. Restart-Computer"
     Write-Host "0. Exit"
     Write-Host ""
 
-    $choice = Read-Host "Select an option"
+#=====================================CHOICE==============================================#
 
+    $choice = Read-Host "Select an option"
+    
     switch ($choice) {
         "1" { Show-PCSystemInfo }
         "2" { Rename-PCComputer }
         "3" { Disable-PCIndexing }
-        "4" { Show-PCPowerManagement }
-        "5" { Set-PCNetwork }
-        "6" { Open-PCDateTimeSettings }
-        "7" { Join-PCDomain }
-        "8" { Install-PCWinget }
-        "9" { Install-PCApps }
-        "10" { Install-Activation }
-        "11" { Invoke-PCWindowsUpdates }
-        "12" { Invoke-PCCleanup }
-        "13" { Restart-PCComputer }
+        "4" { Uninstall-AppxPackage}
+        "5" { Show-PCPowerManagement }
+        "6" { Set-PCNetwork }
+        "7" { Open-PCDateTimeSettings }
+        "8" { Join-PCDomain }
+        "9" { Install-PCWinget }
+        "10" { Install-PCApps }
+        "11" { Install-PCActivation }
+        "12" { Invoke-PCWindowsUpdates }
+        "13" { Invoke-PCCleanup }
+        "14" { Restart-PCComputer }
         "909" { Invoke-PC909 }
         "0" { Disable-PCAutoStart
               Write-Host "Exiting $AppName..." -ForegroundColor Yellow }
