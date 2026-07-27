@@ -137,7 +137,7 @@ function Uninstall-AppxPackage {
     Write-Host "Removing-AppxPackages..."
 
     $AppsToRemove = @(
-    "*MSTEAMS*"
+    "MicrosoftTeams"
     "Microsoft.BingSearch"
     "Microsoft.Todos"
     "Microsoft.YourPhone"
@@ -155,7 +155,8 @@ function Uninstall-AppxPackage {
     "Microsoft.ScreenSketch"
     "Clipchamp.Clipchamp"
     "Microsoft.GamingApp"
-    "Microsoft.MicrosoftStickyNotes"	
+    "Microsoft.MicrosoftStickyNotes"
+    "Microsoft.MicrosoftSolitaireCollection"	
 )
 
 foreach ($App in $AppsToRemove) {
