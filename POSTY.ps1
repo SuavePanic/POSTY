@@ -574,16 +574,6 @@ do {
         "11" { Invoke-PCWindowsUpdates }
         "12" { Invoke-PCCleanup }
         "13" { Restart-PCComputer }
-        "4" { Show-PCPowerManagement }
-        "5" { Set-PCNetwork }
-        "6" { Open-PCDateTimeSettings }
-        "7" { Join-PCDomain }
-        "8" { Install-PCWinget }
-        "9" { Install-PCApps }
-        "10" { Install-PCActivation }
-        "11" { Invoke-PCWindowsUpdates }
-        "12" { Invoke-PCCleanup }
-        "13" { Restart-PCComputer }
         "909" { Invoke-PC909 }
         "0" { Disable-PCAutoStart
               Write-Host "Exiting $AppName..." -ForegroundColor Yellow }
