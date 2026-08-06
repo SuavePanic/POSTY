@@ -133,39 +133,6 @@ else {
     Wait-PCContinue
 }
 
-function Uninstall-AppxPackage {
-    Write-Host "Removing-AppxPackages..."
-
-    $AppsToRemove = @(
-    "MicrosoftTeams"
-    "Microsoft.BingSearch"
-    "Microsoft.Todos"
-    "Microsoft.YourPhone"
-    "Microsoft.WindowsCamera"
-    "Microsoft.WindowsSoundRecorder"
-    "Microsoft.BingWeather"
-    "Microsoft.ZuneMusic"
-    "Microsoft.WindowsAlarms"
-    "Microsoft.GetHelp"
-    "Microsoft.BingNews"
-    "Microsoft.XboxSpeechToTextOverlay"
-    "Microsoft.XboxGamingOverlay"
-    "Microsoft.XboxIdentityProvider"
-    "Microsoft.Xbox.TCUI" 
-    "Microsoft.ScreenSketch"
-    "Clipchamp.Clipchamp"
-    "Microsoft.GamingApp"
-    "Microsoft.MicrosoftStickyNotes"
-    "Microsoft.MicrosoftSolitaireCollection"	
-)
-
-foreach ($App in $AppsToRemove) {
-    Get-AppxPackage -Name $App -AllUsers |
-        Remove-AppxPackage -AllUsers
-    
-}
-    Wait-PCContinue
-}
 
 #=====================================POWER-MGMT===========================================#
 function Show-PCPowerManagement {
@@ -402,7 +369,7 @@ function Install-PCActivation {
 
     try { 
         Write-Host "Activating Windows/Office..."
-        Invoke-WebRequest -uri -UseBasicParsing https://get.activated.win | Invoke-Expression
+        Invoke-WebRequest -uri https://get.activated.win | Invoke-Expression
     }
     catch {
         Write-Host "Activation failed: $($_.Exception.Message)" -ForegroundColor Red
