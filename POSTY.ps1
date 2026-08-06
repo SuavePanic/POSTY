@@ -4,7 +4,7 @@
 POSTY-CONFIG
 Windows Deployment Toolkit
 
-Version : 1.9.6
+Version : 1.9.8
 Author  : SuavePanic
 Project : https://github.com/SuavePanic/POSTY
 
@@ -12,9 +12,12 @@ Copyright (c) 2026 SuavePanic.
 All Rights Reserved.
 
 Special Thanks:
-- Lord Helmet
+- Lord Helmet: 
+  - For the inspiration and guidance in creating this toolkit.
+  - For the invaluable feedback and testing that helped shape the final product.
 - BOB (Quality Assurance and One Piece Of Cake!)
-- Apollo (Field Testing... eventually)
+- Apollo (Love Ya Buddy!)
+- Chief Reynolds: (Never Give Up, Never Surrender!)
 
 Description:
 Windows deployment toolkit for Windows 10 and Windows 11.
@@ -24,7 +27,6 @@ Features:
 - Show-PCSystemInfo
 - Rename computer
 - Disable Indexing
-- Remove AppxPackages
 - Power Management
 - Configure-Network
 - Set Time and Date
@@ -38,7 +40,7 @@ Features:
 #>
 
 $AppName = "POSTY"
-$Version = "1.9.6"
+$Version = "1.9.8"
 $LogRoot = "C:\Logs\POSTY"
 $LogFile = Join-Path $LogRoot "POSTY-$(Get-Date -Format 'yyyyMMdd-HHmmss').log"
 
@@ -133,7 +135,10 @@ else {
     Wait-PCContinue
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> c5b750ae031a98496ebc929f09eb14eadc14833c
 #=====================================POWER-MGMT===========================================#
 function Show-PCPowerManagement {
 
@@ -532,17 +537,16 @@ do {
     Write-Host "1. Show-SystemInfo"
     Write-Host "2. Rename-Computer"
     Write-Host "3. Disable-Indexing"
-    Write-Host "4  AppxPackage-Removal"
-    Write-Host "5. Power-Management"
-    Write-Host "6. Configure-Network"
-    Write-Host "7. Set-Date/Time"
-    Write-Host "8. Join-Domain"
-    Write-Host "9. Install-Winget"
-    Write-Host "10. Install-Apps"
-    Write-Host "11. Activation"
-    Write-Host "12. Windows-Updates"
-    Write-Host "13. System-Cleanup"
-    Write-Host "14. Restart-Computer"
+    Write-Host "4. Power-Management"
+    Write-Host "5. Configure-Network"
+    Write-Host "6. Set-Date/Time"
+    Write-Host "7. Join-Domain"
+    Write-Host "8. Install-Winget"
+    Write-Host "9. Install-Apps"
+    Write-Host "10. Activation"
+    Write-Host "11. Windows-Updates"
+    Write-Host "12. System-Cleanup"
+    Write-Host "13. Restart-Computer"
     Write-Host "0. Exit"
     Write-Host ""
 
@@ -554,17 +558,16 @@ do {
         "1" { Show-PCSystemInfo }
         "2" { Rename-PCComputer }
         "3" { Disable-PCIndexing }
-        "4" { Uninstall-AppxPackage}
-        "5" { Show-PCPowerManagement }
-        "6" { Set-PCNetwork }
-        "7" { Open-PCDateTimeSettings }
-        "8" { Join-PCDomain }
-        "9" { Install-PCWinget }
-        "10" { Install-PCApps }
-        "11" { Install-PCActivation }
-        "12" { Invoke-PCWindowsUpdates }
-        "13" { Invoke-PCCleanup }
-        "14" { Restart-PCComputer }
+        "4" { Show-PCPowerManagement }
+        "5" { Set-PCNetwork }
+        "6" { Open-PCDateTimeSettings }
+        "7" { Join-PCDomain }
+        "8" { Install-PCWinget }
+        "9" { Install-PCApps }
+        "10" { Install-PCActivation }
+        "11" { Invoke-PCWindowsUpdates }
+        "12" { Invoke-PCCleanup }
+        "13" { Restart-PCComputer }
         "909" { Invoke-PC909 }
         "0" { Disable-PCAutoStart
               Write-Host "Exiting $AppName..." -ForegroundColor Yellow }
