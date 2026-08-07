@@ -131,7 +131,7 @@ function wait-continue {
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 }
 
-#=========================MENU===============================#
+#=========================MENU================================#
 
 do {
     Write-Header
