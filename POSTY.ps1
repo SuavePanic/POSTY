@@ -390,7 +390,7 @@ function Install-PCActivation {
         Install-WindowsUpdate -MicrosoftUpdate -AcceptAll -IgnoreReboot
         Confirm-PCReboot -Reason "Windows Updates Installed Successfully."
     }
-    catch {
+        catch {
         Write-Host "Windows Update Failed: $($_.Exception.Message)" -ForegroundColor Red
     }
 
@@ -463,25 +463,17 @@ function Invoke-PC909 {
 
 #==================================UTILITY-FUNCTIONS======================================#
 function Confirm-PCReboot {
-
-    param(
-        [string]$Reason = "Changes require a reboot."
+    param (
+        [string]$Reason
     )
 
     Write-Host ""
-    Write-Host $Reason -ForegroundColor Yellow
-    Write-Host ""
+    Write-Host "$Reason" -ForegroundColor Green
+    Write-Host "A reboot is required to apply changes." -ForegroundColor Yellow
+    $rebootChoice = Read-Host "Do you want to reboot now? (Y/N)"
 
-    $Reboot = Read-Host "Reboot now? (Y/N)"
-
-    if ($Reboot.Trim().ToUpper() -eq "Y") {
-        Write-Host "Rebooting now..." -ForegroundColor Light-Blue
-        Start-Sleep -Seconds 2
-        Restart-Computer -Force
-    }
-    else {
-        Write-Host "Reboot skipped." -ForegroundColor Cyan
-        Wait-PCContinue
+    if ($rebootChoice -eq "Y" -or $rebootChoice -eq "y") {
+        Restart-PCComputer
     }
 }
 
