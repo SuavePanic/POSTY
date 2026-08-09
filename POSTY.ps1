@@ -327,9 +327,6 @@ function Install-PCApps {
     Write-Host "Installing Winfile..."
     Winget Install Microsoft.Winfile --silent -h --accept-package-agreements --accept-source-agreements
     
-    Write-Host "Installing Chocolatey..."
-    Winget Install Chocolatey.Chocolatey --silent -h --accept-package-agreements --accept-source-agreements
-
     Write-Host "Installing Office365..."
     WinGet Install Microsoft.Office --silent -h --accept-package-agreements --accept-source-agreements
 
