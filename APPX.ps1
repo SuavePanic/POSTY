@@ -31,10 +31,10 @@ Start-Transcript -Path $LogFile -Append | Out-Null
 #=======================HEADER============================#
 function Write-Header {
     Clear-Host
-    Write-Host "========================================"    -ForegroundColor DarkCyan           
+    Write-Host "========================================"    -ForegroundColor Magenta           
     Write-Host "             $AppName v$Version"             -ForegroundColor Green
     Write-Host "         APPX-REMOVER WINDOWS"              -ForegroundColor Green
-    Write-Host "========================================"    -ForegroundColor DarkCyan
+    Write-Host "========================================"    -ForegroundColor Magenta
     Write-Host ""
     Write-Host "Hostname: $env:COMPUTERNAME"
     Write-Host "User:     $env:USERNAME"
@@ -46,7 +46,7 @@ function Write-Header {
 function Remove-APPX11 {
     
     Clear-Host
-        Write-Host "Removing Windows 11 APPX packages..." -ForegroundColor Magenta
+        Write-Host "Removing Windows 11 APPX packages..." -ForegroundColor Yellow
         Write-Host ""
  
         Get-AppxPackage -Name "Clipchamp.Clipchamp" -AllUsers | Remove-AppxPackage
@@ -82,7 +82,7 @@ catch {
 function Remove-APPX10 {
 
     Clear-Host
-    Write-Host "Removing Windows 10 APPX packages..." -ForegroundColor Magenta
+    Write-Host "Removing Windows 10 APPX packages..." -ForegroundColor Yellow
     Write-Host ""
 
         Get-AppxPackage -Name "Microsoft.ZuneVideo" -AllUsers | Remove-AppxPackage
@@ -116,7 +116,7 @@ function Remove-APPX10 {
     Wait-continue
 
     catch { 
-        Write-Host "APPX Removal Failed: $($_.Exception.Message)" -ForegroundColor Yellow
+        Write-Host "APPX Removal Failed: $($_.Exception.Message)" -ForegroundColor Red
     }
 }
 
@@ -134,12 +134,12 @@ function wait-continue {
 
 do {
     Write-Header
-    Write-Host "========== MENU ==========" -ForegroundColor DarkCyan
+    Write-Host "========== MENU ==========" -ForegroundColor Magenta
     Write-Host "1. APPX-REMOVAL-11"   -ForegroundColor Green
     Write-Host "2. APPX-REMOVAL-10"   -ForegroundColor Green
     Write-Host "3. Restart-Computer"  -ForegroundColor Yellow
     Write-Host "0. Exit"              -ForegroundColor Red
-    Write-Host "==========================" -ForegroundColor DarkCyan
+    Write-Host "==========================" -ForegroundColor Magenta
 
 #=========================CHOICE===============================#
 $choice = Read-Host "Choose An Option"
