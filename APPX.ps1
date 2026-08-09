@@ -14,6 +14,7 @@ Special Thanks:
 - Lord Helmet
 - BOB (Quality Assurance and One Piece Of Cake!)
 - Apollo (Field Testing)
+- Chief (B7)
 
 Description:
 APPX-Package Remover for Windows 10 and Windows 11.
@@ -72,11 +73,11 @@ function Remove-APPX11 {
         Get-AppxPackage -Name "Microsoft.ZuneMusic" -AllUsers | Remove-AppxPackage
         Get-AppxPackage -Name "Microsoft.Teams" -AllUsers | Remove-AppxPackage
 
-Wait-continue
-
 catch {
         Write-Host "APPX Removal Failed: $($_.Exception.Message)" -ForegroundColor Yellow
     }
+
+    Wait-continue
 }
 
 function Remove-APPX10 {
@@ -113,11 +114,12 @@ function Remove-APPX10 {
         Get-AppxPackage -Name "Microsoft.MicrosoftOfficeHub" -AllUsers | Remove-AppxPackage
         Get-AppxPackage -Name "Microsoft.YourPhone" -AllUsers | Remove-AppxPackage
 
-    Wait-continue
-
     catch { 
         Write-Host "APPX Removal Failed: $($_.Exception.Message)" -ForegroundColor Red
     }
+
+    Wait-continue
+
 }
 
 function Restart-Computer {
