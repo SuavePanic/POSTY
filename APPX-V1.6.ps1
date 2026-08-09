@@ -134,12 +134,12 @@ function wait-continue {
 
 do {
     Write-Header
-    Write-Host "========== MENU =========="
+    Write-Host "========== MENU ==========" -ForegroundColor DarkCyan
     Write-Host "1. APPX-REMOVAL-11"   -ForegroundColor Green
     Write-Host "2. APPX-REMOVAL-10"   -ForegroundColor Green
     Write-Host "3. Restart-Computer"  -ForegroundColor Yellow
     Write-Host "0. Exit"              -ForegroundColor Red
-    Write-Host "=========================="
+    Write-Host "==========================" -ForegroundColor DarkCyan
 
 #=========================CHOICE===============================#
 $choice = Read-Host "Choose An Option"
