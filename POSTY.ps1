@@ -276,8 +276,6 @@ function Join-PCDomain {
             Add-Computer -DomainName $domainName -OUPath $ouPath -Credential $cred -Force -ErrorAction Stop
         }
 
-        Write-Host "Computer joined to domain successfully." -ForegroundColor Green
-        Write-Host "A reboot is required." -ForegroundColor Yellow
         Confirm-PCReboot -Reason "Computer Joined Domain Successfully." 
 
     }
