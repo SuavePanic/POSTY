@@ -4,7 +4,7 @@
 APPX
 Debloat Windows
 
-Version : 1.6
+Version : 1.7
 Author  : SuavePanic
 
 Copyright (c) 2026 SuavePanic.
@@ -21,7 +21,7 @@ Features: REMOVES BLOATWARE FROM WINDOWS
 #>
 #=========================================================#
 $AppName = "APPX"
-$Version = "1.6"
+$Version = "1.7"
 $LogRoot = "C:\Logs\APPX"
 $LogFile = Join-Path $LogRoot "APPX-$(Get-Date -Format 'yyyyMMdd-HHmmss').log"
 
