@@ -275,9 +275,8 @@ function Join-PCDomain {
         else {
             Add-Computer -DomainName $domainName -OUPath $ouPath -Credential $cred -Force -ErrorAction Stop
         }
-
-        Confirm-PCReboot -Reason "Computer Joined Domain Successfully." 
-
+        Confirm-PCReboot -Reason "Computer Joined Domain Successfully."
+         
     }
     catch {
         Write-Host "Domain join failed: $($_.Exception.Message)" -ForegroundColor Red
