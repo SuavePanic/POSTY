@@ -456,7 +456,7 @@ function Confirm-PCReboot {
     $Reboot = Read-Host "Reboot now? (Y/N)"
 
     if ($Reboot.Trim().ToUpper() -eq "Y") {
-        Write-Host "Rebooting now..." -ForegroundColor Light-Blue
+        Write-Host "Rebooting now..." -ForegroundColor Green
         Start-Sleep -Seconds 2
         Restart-Computer -Force
     }
@@ -474,7 +474,7 @@ function Restart-PCComputer {
     Write-Header
     Write-Host "Restart Computer" -ForegroundColor Yellow
     Write-Host ""
-    Write-Host "Computer will restart in 3 seconds..." -ForegroundColor Blue
+    Write-Host "Computer will restart in 3 seconds..." -ForegroundColor Green
 
     shutdown.exe /r /t 3 
 }
