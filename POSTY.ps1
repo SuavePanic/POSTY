@@ -49,13 +49,13 @@ Start-Transcript -Path $LogFile -Append | Out-Null
 #======================================HEADER=============================================#
 function Write-Header {
     Clear-Host
-    Write-Host "========================================"   -ForegroundColor DarkBlue           
+    Write-Host "========================================"   -ForegroundColor Magenta           
     Write-Host "             $AppName v$Version"             -ForegroundColor Green
     Write-Host "       -WINDOWS POST-INSTALL TOOL-"         -ForegroundColor Green
-    Write-Host "========================================"   -ForegroundColor DarkBlue
+    Write-Host "========================================"   -ForegroundColor Magenta
     Write-Host "  Install Winget Before Installing APPS"    -ForegroundColor Green
     Write-Host "           On Windows 10 Only"              -ForegroundColor Green
-    Write-Host "+++++++++++++++++++++++++++++++++++++++++"  -ForegroundColor DarkBlue
+    Write-Host "+++++++++++++++++++++++++++++++++++++++++"  -ForegroundColor Magenta
     Write-Host ""
     Write-Host "Hostname: $env:COMPUTERNAME"
     Write-Host "User:     $env:USERNAME"
@@ -68,9 +68,9 @@ function Show-PCSystemInfo {
 
     Clear-Host
 
-    Write-Host "=================================" -ForegroundColor DarkBlue
+    Write-Host "=================================" -ForegroundColor Magenta
     Write-Host "        SYSTEM INFORMATION"        -ForegroundColor Green
-    Write-Host "=================================" -ForegroundColor DarkBlue
+    Write-Host "=================================" -ForegroundColor Magenta
     Write-Host ""
 
     systeminfo
@@ -100,7 +100,7 @@ function Rename-PCComputer {
         }
         
     catch {
-        Write-Host "Rename failed: $($_.Exception.Message)"         -ForegroundColor Red
+        Write-Host "Rename failed: $($_.Exception.Message)" -ForegroundColor Red
     }
 }
 
@@ -415,29 +415,29 @@ function Invoke-PC909 {
     Write-Host ""
     Write-Host "FEDERATION ACCESS CODE ACCEPTED" -ForegroundColor Green
     Write-Host ""
-    Write-Host "Initializing Updates and Policies..." -ForegroundColor Yellow
+    Write-Host "Initializing Updates and Policies..." -ForegroundColor DarkYellow
     Start-Sleep 1
 
     Write-Host ""
-    Write-Host "Connecting to AMIGO..." -ForegroundColor Yellow
+    Write-Host "Connecting to AMIGO..." -ForegroundColor DarkYellow
     Start-Sleep 1
 
     Write-Host ""
     Write-Host "Bridge Status: ONLINE" -ForegroundColor Green
-    Write-Host "Chief Reynolds: In Breakroom" -ForegroundColor Yellow
-    Write-Host "Apollo: Installing AOL..." -ForegroundColor Yellow
-    Write-Host "BOB: Monitoring Clipboard..." -ForegroundColor DarkBlue
-    Write-Host "Helmet: On Duty..." -ForegroundColor Cyan
+    Write-Host "Chief Reynolds: In Breakroom" -ForegroundColor DarkYellow
+    Write-Host "Apollo: Installing AOL..." -ForegroundColor DarkYellow
+    Write-Host "BOB: Monitoring Clipboard..." -ForegroundColor DarkYellow
+    Write-Host "Helmet: On Duty..." -ForegroundColor DarkYellow
 
     Write-Host ""
-    Write-Host "Special Thanks:" -ForegroundColor Cyan
-    Write-Host "  Helmet"
-    Write-Host "  BOB"
-    Write-Host "  Apollo"
-    Write-Host "  Chief Reynolds"
+    Write-Host "Special Thanks:" -ForegroundColor Green
+    Write-Host "  Helmet" -ForegroundColor Green
+    Write-Host "  BOB" -ForegroundColor Green
+    Write-Host "  Apollo" -ForegroundColor Green
+    Write-Host "  Chief Reynolds" -ForegroundColor Green
     Write-Host ""
     Write-Host "YOU'VE GOT CHANGE!" -ForegroundColor Green
-    Write-Host "Code-909 Executed Successfully." -ForegroundColor Blue
+    Write-Host "Code-909 Executed Successfully." -ForegroundColor White
 
     Wait-PCContinue
 }
@@ -461,7 +461,7 @@ function Confirm-PCReboot {
         Restart-Computer -Force
     }
     else {
-        Write-Host "Reboot skipped." -ForegroundColor Cyan
+        Write-Host "Reboot skipped." -ForegroundColor Yellow
         Wait-PCContinue
     }
 }
@@ -511,20 +511,20 @@ function Disable-PCAutoStart {
 #=====================================MENU==============================================#
 do {
     Write-Header
-    Write-Host "1. Show-SystemInfo" -ForegroundColor Blue
-    Write-Host "2. Rename-Computer" -ForegroundColor Blue
-    Write-Host "3. Disable-Indexing" -ForegroundColor Blue
-    Write-Host "4. Power-Management" -ForegroundColor Blue
-    Write-Host "5. Configure-Network" -ForegroundColor Blue
-    Write-Host "6. Set-Date/Time" -ForegroundColor Blue
-    Write-Host "7. Join-Domain" -ForegroundColor Blue
-    Write-Host "8. Install-Winget" -ForegroundColor Blue
-    Write-Host "9. Install-Apps" -ForegroundColor Blue
-    Write-Host "10. Activation" -ForegroundColor Blue
-    Write-Host "11. Windows-Updates" -ForegroundColor Blue
-    Write-Host "12. System-Cleanup" -ForegroundColor Blue
-    Write-Host "13. Restart-Computer" -ForegroundColor Blue
-    Write-Host "0. Exit" -ForegroundColor Blue
+    Write-Host "1. Show-SystemInfo" -ForegroundColor White
+    Write-Host "2. Rename-Computer" -ForegroundColor White
+    Write-Host "3. Disable-Indexing" -ForegroundColor White
+    Write-Host "4. Power-Management" -ForegroundColor White
+    Write-Host "5. Configure-Network" -ForegroundColor White
+    Write-Host "6. Set-Date/Time" -ForegroundColor White
+    Write-Host "7. Join-Domain" -ForegroundColor White
+    Write-Host "8. Install-Winget" -ForegroundColor White
+    Write-Host "9. Install-Apps" -ForegroundColor White
+    Write-Host "10. Activation" -ForegroundColor White
+    Write-Host "11. Windows-Updates" -ForegroundColor White
+    Write-Host "12. System-Cleanup" -ForegroundColor White
+    Write-Host "13. Restart-Computer" -ForegroundColor White
+    Write-Host "0. Exit" -ForegroundColor White
     Write-Host ""
 
 #=====================================CHOICE==============================================#
