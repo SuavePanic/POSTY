@@ -4,7 +4,7 @@
 APPX
 Debloat Windows
 
-Version : 1.6
+Version : 1.
 Author  : SuavePanic
 
 Copyright (c) 2026 SuavePanic.
@@ -14,6 +14,7 @@ Special Thanks:
 - Lord Helmet
 - BOB (Quality Assurance and One Piece Of Cake!)
 - Apollo (Field Testing)
+- Chief Reynolds (Always Making Me Laugh)
 
 Description:
 APPX-Package Remover for Windows 10 and Windows 11.
