@@ -4,7 +4,7 @@
 POSTY-CONFIG
 Windows Deployment Toolkit
 
-Version : 1.0.6
+Version : 1.0.7
 Author  : SuavePanic
 Project : https://github.com/SuavePanic/POSTY
 
@@ -39,7 +39,7 @@ Features:
 #>
 
 $AppName = "POSTY"
-$Version = "1.0.6"
+$Version = "1.0.7"
 $LogRoot = "C:\Logs\POSTY"
 $LogFile = Join-Path $LogRoot "POSTY-$(Get-Date -Format 'yyyyMMdd-HHmmss').log"
 
@@ -94,7 +94,7 @@ function Rename-PCComputer {
         Rename-Computer -NewName $newName -Force -ErrorAction Stop
         Write-Host "Computer renamed to $newName. Reboot Required." -ForegroundColor Green
         
-        Enable-PCAutoStart output | Out-Null 
+        Enable-PCAutoStart | Out-Null 
 
         Confirm-PCReboot -Reason "Computer Renamed Successfully."
         }
